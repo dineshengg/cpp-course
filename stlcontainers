@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <list>
+#include <map>
+#include <string>
+#include <set>
+using namespace std;
+
+//standard libraries  - Are templates that uses data structures like BST, Linkedlist, RBT, Hashmap
+//It can manages different collections of data like int or user defined types.
+// All the memory managed in STL is dynamic or heap memory
+
+int main() 
+{
+  //sequence containers
+    std::vector<int> vec = {1,2,3,4}; // dynamic array int *ptr = new int[20]
+    vec[0] = 10;
+    vec.push_back(5);
+    vec.push_back(6);
+    for(vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+    {
+      cout << *it << " ";
+    }
+    
+    cout<<"vector size " << vec.size() << "\n";
+    int i = vec.back();
+    cout << "Vector last element " << i << "\n";
+    vec.pop_back();
+    cout << "End of vector\n";
+    
+    list<int> lst = {1,2,3,4}; // using double linked list 
+    lst.push_front(10);
+    lst.push_back(20);
+    
+    //10,1,2,3,4,20
+    auto it = lst.begin();
+    it++;
+    lst.insert(it, 40);
+    //10,40,1,2,3,4,20
+    
+    for(list<int>::iterator it = lst.begin(); it != lst.end(); it++)
+    {
+      cout << *it << " ";
+    }
+    
+    cout << "End of list\n";
+    
+    //associative container
+    map<int, string> mp; // key and value . BST to sort the keys
+    mp[10] = "Number is 100";
+    for(int i=0; i<5; i++)
+    {
+      char buff[20];
+      sprintf(buff, "Number is %d", i+10);
+      string str = buff;
+      mp[i] = str;
+    }
+    
+    mp[2] = "Number is 22";
+    mp[5] = "Number is 1";
+    
+    
+    for(map<int, string>::iterator it = mp.begin(); it != mp.end(); it ++)
+    {
+      cout << it->first << " " << it->second << "\n";
+    }
+
+    set<int> st = {1,4,5,6}; //key which is sorted, immutable and unique
+    auto it1 = st.begin();
+    it1++;
+    st.insert(it1, 2);
+    st.insert(it1, 2);
+    for(auto it = st.begin(); it != st.end(); it++)
+    {
+      cout << *it << " ";
+    }
+    
+    
+    return 0;
+}
