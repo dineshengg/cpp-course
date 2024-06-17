@@ -1,0 +1,94 @@
+#include <fstream>
+
+using namespace std;
+
+class FileStream
+{
+private:
+	fstream f;
+	string file;
+public:
+	FileStream(const string& f);
+	int WriteToFile(const string& msg);
+	int ReadFromFile(string &msg);
+	void ReadFromStart();
+};
+
+#include <iostream>
+#include <fstream>
+#include "Filestreams.h"
+
+FileStream::FileStream(const string& fn)
+{
+	file = fn;
+	f.open(file.c_str(), ios::out | ios::in | ios::trunc);
+}
+
+int FileStream::WriteToFile(const string& msg)
+{
+	if (f.is_open())
+	{
+		f << msg << endl;
+	}
+	else
+	{
+		return -1;
+	}
+	return 0;
+}
+
+int FileStream::ReadFromFile(string& msg)
+{
+	if (f.is_open())
+	{
+		char buffer[200] = { 0 };
+		f.getline(buffer, 200);
+		msg = buffer;
+		if (f.eof())
+		{
+			return -2;
+		}
+	}
+	else
+	{
+		return -1;
+	}
+	
+	return 0;
+}
+
+void FileStream::ReadFromStart()
+{
+	f.clear();
+	f.seekg(0);
+}
+
+
+int main()
+{
+    FileStream obj("C:\\Test\\log.txt");
+    int flag = obj.WriteToFile("DB connection attempted");
+    flag = flag | obj.WriteToFile("DB connection made");
+    flag = flag | obj.WriteToFile("query run successfully");
+    flag = flag | obj.WriteToFile("DB connection closed");
+    if (0 == flag)
+    {
+        cout << "Conntent written \n";
+    }
+
+    obj.ReadFromStart();
+
+    string msg;
+    flag = obj.ReadFromFile(msg);
+    cout << msg;
+    flag = flag | obj.ReadFromFile(msg);
+    cout << msg;
+    flag = flag | obj.ReadFromFile(msg);
+    cout << msg;
+    flag = flag | obj.ReadFromFile(msg);
+    cout << msg;
+    flag = flag | obj.ReadFromFile(msg);
+    if (flag != 0)
+        cout << "Error happended with error code " << flag << "\n";
+    cout << msg;
+}
